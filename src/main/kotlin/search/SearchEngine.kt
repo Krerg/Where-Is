@@ -15,7 +15,7 @@ class SearchEngine {
     fun search(searchParameter: String, @Nullable searchDirectory: Path?) {
         val startDirectory = if (searchDirectory != null) searchDirectory else Paths.get("");
         val results = mutableListOf<String>()
-        recursiveSearch(searchParameter, startDirectory, results)
+        doSearch(searchParameter, startDirectory, results)
         val errors = resultsValidator.validate(results, Errors());
         if(!errors.isEmpty()) {
             errors.print()
@@ -24,7 +24,7 @@ class SearchEngine {
         }
     }
 
-    private fun recursiveSearch(searchParameter: String, directory: Path, results: MutableList<String>) {
+    private fun doSearch(searchParameter: String, directory: Path, results: MutableList<String>) {
         Files.walk(directory).forEach {
             if(searchParameter.equals(it.fileName.toString())) {
                 results.add(it.toAbsolutePath().toString())
